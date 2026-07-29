@@ -19,10 +19,8 @@ connectDB().then(() => {
     process.exit(1);
 });
 
-
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('./views'));
-
 
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -42,8 +40,6 @@ app.get('/', checkToken, async (req, res) => {
     blogs: blogs
   });
 });
-
-
   
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on localhost:${process.env.PORT}`);
