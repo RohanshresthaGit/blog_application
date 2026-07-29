@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import { generateToken } from '../services/auth.services.js';
 
 const registerView = (req, res) => {
     return res.render("register");
@@ -8,16 +9,44 @@ const loginView = (req, res) => {
     return res.render("login");
 }
 
-const register =async (req, res) => {
-    const {fullName, email, password} = req.body;
+const register = async (req, res) => {
+    try {
+        const { fullName, email, password } = req.body;
 
-    await User.create({
-        fullName,
-        email,
-        password
-    })
-    return res.redirect('/', {user: req.user});   
-}
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.render("register", {
+                toastMessage: "Email is already registered."
+            });
+        }
+
+        // Create user
+        const user = new User({
+            fullName,
+            email,
+            password
+        });
+
+        await user.save();
+
+        // Generate token
+        const token = generateToken(user);
+
+        // Set cookie and redirect
+        return res
+            .cookie("token", token)
+            .redirect("/");
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).render("register", {
+            toastMessage: "Something went wrong. Please try again."
+        });
+    }
+};
 
 const login =async (req, res) => {
     const {email, password} = req.body;
@@ -31,7 +60,7 @@ const login =async (req, res) => {
 }
 
 const logout = async (req, res) => {
-    return res.clearCookie('token').redirect('/');
+    return res.clearCookie('token').redirect('/user/login');
 }
 
 export {

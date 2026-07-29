@@ -27,16 +27,15 @@ app.set('views', path.resolve('./views'));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.resolve('./public')))
-app.use(checkToken);
 
 app.use('/user', userRouter);
-app.use('/blog', blogRouter);
+app.use('/blog', checkToken, blogRouter);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ message: 'Server is healthy', status: 'OK'});
 });
 
-app.get('/',async (req, res) => {
+app.get('/', checkToken, async (req, res) => {
   const blogs = await Blog.find({})
   res.render('home',{
     user: req.user,

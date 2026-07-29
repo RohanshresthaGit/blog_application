@@ -2,55 +2,91 @@
 <html lang="en">
 <head>
     <%- include('./partials/head') %>
-    <title>Homepage</title>
+    <title><%= blog.title %></title>
 </head>
-<body>
-    <%- include('./partials/scripts') %>
+<body class="bg-light">
+
     <%- include('./partials/navbar') %>
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
 
-            <!-- Blog Card -->
-            <div class="card shadow-sm border-0">
+    <div class="container py-5">
 
-                <!-- Blog Image -->
-                <img src="<%= blog.coverImage %>"
-                    class="card-img-top"
-                    alt="Blog Image"
-                    style="height: 450px; object-fit: cover;">
+        <div class="row justify-content-center">
 
-                <div class="card-body">
+            <div class="col-lg-9">
 
-                    <!-- Title -->
-                    <h1 class="card-title fw-bold mb-3">
-                        <%= blog.title %>
-                    </h1>
+                <div class="card border-0 shadow">
 
-                    <!-- Meta Information -->
-                    <div class="d-flex align-items-center text-muted mb-4">
-                        <!-- <small>
-                            <strong>By</strong> Rohan Shrestha
-                        </small> -->
-                        <span class="mx-2">•</span>
-                        <small>
-                            Created at:
-                            <strong><%= blog.createdAt.toDateString() %></strong>
-                        </small>
-                    </div>
+                    <!-- Cover Image -->
+                    <img
+                        src="<%= blog.coverImage %>"
+                        class="card-img-top"
+                        alt="<%= blog.title %>"
+                        style="height: 450px; object-fit: cover;">
 
-                    <hr>
+                    <div class="card-body p-5">
 
-                    <!-- Blog Content -->
-                    <div class="mt-4" style="line-height: 1.9;">
-                        <%= blog.content %>
+                        <!-- Badge -->
+                        <span class="badge bg-primary mb-3">
+                            Blog
+                        </span>
+
+                        <!-- Title -->
+                        <h1 class="display-5 fw-bold mb-3">
+                            <%= blog.title %>
+                        </h1>
+
+                        <!-- Blog Info -->
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+
+                            <div class="text-muted">
+                                <strong>Published:</strong>
+                                <%= blog.createdAt.toDateString() %>
+                            </div>
+
+                            <% if (blog.createdBy) { %>
+                            <div class="text-muted">
+                                <strong>Author:</strong>
+                                <%= blog.createdBy.fullName %>
+                            </div>
+                            <% } %>
+
+                        </div>
+
+                        <hr>
+
+                        <!-- Content -->
+                        <div class="fs-5 lh-lg mt-4">
+                            <%= blog.content %>
+                        </div>
+
+                        <hr class="my-5">
+
+                        <!-- Footer -->
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <a href="/" class="btn btn-outline-secondary">
+                                ← Back to Blogs
+                            </a>
+
+                            <% if (blog.createdBy) { %>
+                                <small class="text-muted">
+                                    Written by <strong><%= blog.createdBy.fullName %></strong>
+                                </small>
+                            <% } %>
+
+                        </div>
+
                     </div>
 
                 </div>
+
             </div>
 
         </div>
+
     </div>
-</div>
+
+    <%- include('./partials/scripts') %>
+
 </body>
 </html>

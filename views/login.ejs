@@ -1,30 +1,112 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%- include('./partials/head') %>
     <title>Login</title>
 </head>
-<body>
-    <%- include('./partials/scripts') %>
+<body class="bg-light">
+
     <%- include('./partials/navbar') %>
 
     <div class="container">
-        <form action="/user/login" method="post">
-       
-        <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        <div class="row justify-content-center align-items-center vh-100">
+            <div class="col-md-6 col-lg-5 col-xl-4">
+
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body p-5">
+
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold">Welcome Back</h2>
+                            <p class="text-muted">
+                                Sign in to continue
+                            </p>
+                        </div>
+
+                        <form action="/user/login" method="POST">
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label fw-semibold">
+                                    Email Address
+                                </label>
+                                <input
+                                    type="email"
+                                    class="form-control form-control-lg"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Enter your email"
+                                    required
+                                >
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="password" class="form-label fw-semibold">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    class="form-control form-control-lg"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Enter your password"
+                                    required
+                                >
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button class="btn btn-primary btn-lg">
+                                    Login
+                                </button>
+                            </div>
+
+                        </form>
+
+                        <div class="text-center">
+                            <small class="text-muted">
+                                Don't have an account?
+                                <a href="/user/register" class="text-decoration-none">
+                                    Sign Up
+                                </a>
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" class="form-control" id="password" placeholder="Password">
-        </div>
-       
-        <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
     </div>
+
+    <!-- Toast -->
+    <% if (typeof toastMessage !== 'undefined' && toastMessage) { %>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+        <div id="liveToast" class="toast align-items-center text-bg-danger border-0 shadow" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <%= toastMessage %>
+                </div>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast">
+                </button>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <%- include('./partials/scripts') %>
+
+    <% if (typeof toastMessage !== 'undefined' && toastMessage) { %>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toast = new bootstrap.Toast(document.getElementById("liveToast"), {
+                delay: 3000
+            });
+
+            toast.show();
+        });
+    </script>
+    <% } %>
+
 </body>
 </html>
-
