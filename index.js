@@ -8,6 +8,7 @@ import connectDB from './database/db.js';
 import cookieParser from 'cookie-parser';
 import checkToken from './middlewares/auth.middleware.js'
 import Blog from './models/blog.model.js';
+import commentRouter from './routes/like.routes.js'
 dotenv.config();
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(express.static(path.resolve('./public')))
 
 app.use('/user', userRouter);
 app.use('/blog', checkToken, blogRouter);
+app.use('/comment', checkToken, commentRouter);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ message: 'Server is healthy', status: 'OK'});
